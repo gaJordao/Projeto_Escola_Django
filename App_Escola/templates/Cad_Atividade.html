@@ -47,7 +47,7 @@
             </ul>
          {% endif %}
 
-        <form id="form" class="form" method="POST" action="{% url 'salvar_atividade_nova'  %}">{% csrf_token %}
+        <form id="form" class="form" method="POST" action="{% url 'salvar_atividade_nova' turma.id %}">{% csrf_token %}
 
                 <div class="form-content">
 

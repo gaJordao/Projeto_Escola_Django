@@ -138,22 +138,19 @@ def salvar_turma_nova(request):
         return render(request, 'Cons_Turma_Lista.html', {'usuario_logado': usuario_logado, 'turmas_do_professor': turmas_do_professor, 'id_logado': id_logado})
     
 
-def ver_atividades(request, id_turma):
-    turma_logado = Turma.objects.filter(id=id_turma).values("nome_turma", "id")
-    turma_logado = turma_logado[0]
-    turma_logado = turma_logado['nome_turma']
+def ver_atividades(request, pk):
+    turma_logado = Turma.objects.get(id=pk)
+    atividades = Atividade.objects.filter(id_turma=pk)
+    context = {
+        'turma': turma_logado, 
+        'atividades': atividades,
+    }
+    return render(request, 'Mostrar_Atividades.html', context)
 
-    return render(request, 'Cad_Atividade.html', {
-        'turma_logado': turma_logado, 
-        "id_turma": id_turma
-    })
-
-def salvar_atividade_nova(request):
+def salvar_atividade_nova(request, pk):
     if (request.method =='POST'):
         nome_atividade = request.POST.get('nome_atividade')
-        id_turma = request.POST.get('id_turma')
-
-        turma = Turma.objects.get(id=id_turma)
+        turma = Turma.objects.get(id=pk)
 
         grava_atividade = Atividade(
             nome_atividade=nome_atividade,
@@ -168,9 +165,8 @@ def salvar_atividade_nova(request):
         # atividades_da_turma = Turma.objects.filter(id=id_logado)
         # turma_nome = dados_turma[0]['nome_turma']
 
-
-        atividades = Atividade.objects.filter(id_turma=id_turma)
-        turma = Turma.objects.get(id=id_turma)
+        atividades = Atividade.objects.filter(id_turma=pk)
+        turma = Turma.objects.get(id=pk)
         context = {
             'turma': turma,
             'atividades': atividades,
@@ -179,6 +175,8 @@ def salvar_atividade_nova(request):
             print (atividade.nome_atividade)
             print('fudeu')
         return render(request, 'Mostrar_Atividades.html', context)
+    turma = Turma.objects.get(id=pk)
+    return render(request, 'Cad_Atividade.html', { 'turma': turma})
     
 
 def delete_turma(request, pk):
@@ -186,6 +184,13 @@ def delete_turma(request, pk):
         turma = Turma.objects.get(id=pk)
         turma.delete()
         return redirect('cad_turma', turma.id_professor.id)
+    
+
+def delete_atividade(request, pk):
+    if request.method == 'POST':
+        atividade = Atividade.objects.get(id=pk)
+        atividade.delete()
+        return redirect('ver_atividades', atividade.id_turma.id)
 
 
 
