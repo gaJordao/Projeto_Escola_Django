@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Cons_Turma_Lista.css' %}">
+    <title>Document</title>
+</head>
+<header class="login">
+    <div class="fundo_menu">
+        <div class="nome_sistema">
+            Sistema de Apoio aos Professores
+        </div>
+    </div>
+</header> 
+
+<nav class="menu">
+    <ul>
+
+       <li><a href="/cad_turma/{{id_logado}}">Cadastrar Turmas</a></li>
+        
+       <li> | Professor logado: {{usuario_logado}} | </a></li>
+       <li><a href="../accounts/logout">SAIR</a></li>
+
+    </ul>
+</nav> 
+     
+<body onLoad="login();">
+    <div class="principal">
+    <div class="container">
+        <section class="enquadramento">
+            <h1> Turmas Cadastradas</h1>
+        </section>
+
+         {% if messages %}
+            <ul class="mensagem_do_servidor" style="background: #7d7f81; padding: 24px; text-align:center; color: #fff;">
+                {% for mensagem in messages %}
+                   <li style="list-style: none;" {% if mensagem.tags %}class="alert alert-{{message.tags}}"{% endif %}>{{mensagem}}</li>
+                {% endfor %}
+            </ul>
+         {% endif %}
+
+        <input type="hidden"  name="id_logado" id="id_logado"  value="{{id_logado}}" />
+        <input type="hidden"  name="nome_logado" id="nome_logado"  value="{{usuario_logado}}" />
+        <hr>
+
+        <table>
+            <tr>
+                <th>Numero</th>
+                <th>Turma</th>
+                <th>Excluir</th>
+                <th>Visitar</th>
+            </tr>
+            
+            {% for igs in turmas_do_professor %}
+            <tr>
+                <td style="text-align:center">{{igs.id}} </td>
+                <td>{{igs.nome_turma}}</td>
+                <td><form method="post" action="{% url 'delete_turma' igs.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Excluir</button>
+                </form></td>
+                <td style="text-align:center"><a href={% url 'ver_atividades' igs.id %}><i class="fa-solid fa-eye"></i></a></td>               
+            </tr>
+            {% endfor %}
+
+        </table>
+
+    </div>    
+    </div>
+
+<script src="https://kit.fontawesome.com/c9237383f1.js" crossorigin="anonymous"></script>
+
+</body>
+
+<script>
+
+function login(){
+        localStorage.clear()
+        const value_id_logado = localStorage.getItem('escola_id_logado');
+        const value_nome_logado = localStorage.getItem('escola_nome_logado');
+        let id_logado = document.getElementById("id_logado").value
+
+        if (value_id_logado == null) {
+
+            //let id_logado = document.getElementById("id_logado").value
+            let nome_logado = document.getElementById("nome_logado").value
+
+            localStorage.setItem('escola_id_logado', id_logado)
+            localStorage.setItem('escola_nome_logado', nome_logado)
+
+        }
+        else
+        {
+            console.log(value_id_logado, id_logado)
+          if (value_id_logado == null || value_id_logado != id_logado) {
+            
+              window.alert('Você não está logado. Faça o Login antes de continuar.');
+              window.location.href='../';
+          }
+          else{
+
+            document.getElementById("id_logado").value = value_id_logado ;
+            document.getElementById("nome_logado").value = value_nome_logado ;
+          }
+        }
+
+
+    }
+
+</script>
+
+<script>
+
+function valida_excluir(id){
+
+  // Primeiro, exibir a mensagem de confirmação
+  let userConfirmation = confirm("Você tem certeza de que deseja excluir este item?");
+
+  // Se o usuário confirmou a exclusão
+  if(userConfirmation) {
+    // Delete o item
+    // Código para deletar o item vai aqui
+    id=id;
+    endereco='/excluir_turma/' + id;
+    window.location.href=endereco;
+  }
+  // Se o usuário cancelou a exclusão
+  else {
+    // Não faça nada
+    console.log('Operação de exclusão cancelada.');
+  }
+}
+
+
+
+
+
+</script>
+
+
+
+</html>

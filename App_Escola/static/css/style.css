@@ -1,0 +1,56 @@
+.container_login{
+    width: 100vw;
+    height: 100vh;
+    background: #6C7A89;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.conponents{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 450px;
+    height: 400px;
+    background: #fff;
+}
+
+.conponents h1{
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.conponents label{
+    font-size: 20px;
+}
+
+.conponents input{
+    width: 250px;
+}
+
+.conponents button{
+    margin-top: 30px;
+    width: 130px;
+    border: none;
+    background-color: black;
+    color: #fff;
+    padding: 15px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: .4s;
+    border-radius: 4px;
+}
+
+.conponents button:hover{
+    background-color: #686868;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+body {
+    margin: 0px;
+    }

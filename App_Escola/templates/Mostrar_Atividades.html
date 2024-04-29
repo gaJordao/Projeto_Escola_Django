@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Atividades</title>
+</head>
+<body>
+<h1>Atividades da Turma {{ turma.nome_turma }}</h1>
+
+    <h2>Turma</h2>
+    <p>ID: {{ turma.id }}</p>
+    <p>Nome: {{ turma.nome_turma }}</p>
+
+    <h2>Atividades</h2>
+    <ul>
+        {% for atividade in atividades %} 
+            <li>{{ atividade.id_turma }} - {{ atividade.nome_atividade }}</li>
+        {% endfor %} 
+    </ul>
+</body>
+</html>
